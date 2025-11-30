@@ -541,6 +541,31 @@ addBtn.addEventListener("click", () => {
   civicoInput.value = "";
 });
 
+const stradaSelect = document.getElementById("streetSelect");
+
+// Quando l'utente digita
+civicoInput.addEventListener("input", () => {
+  const strada = stradaSelect.value;
+  const civico = civicoInput.value.trim().toLowerCase();
+
+  if (!strada) return; // nessuna strada selezionata
+
+  // Cerca la strada nella lista percorso
+  const stradaObj = percorso.find(s => s.street === strada);
+
+  if (!stradaObj) return;
+
+  // Normalizza la lista dei civici
+  const civiciValidi = stradaObj.civici.map(c => c.toLowerCase());
+
+  // Se il civico NON è nella lista → diventa rosso
+  if (civico && !civiciValidi.includes(civico)) {
+    civicoInput.classList.add("input-error");
+  } else {
+    civicoInput.classList.remove("input-error");
+  }
+});
+
 // === ORDINA CONSEGNE IN BASE AL PERCORSO ===
 function ordinaConsegne() {
   deliveries.sort((a, b) => {
@@ -605,3 +630,4 @@ clearAllBtn.addEventListener("click", () => {
 
 // === AVVIO ===
 mostraConsegne();
+
